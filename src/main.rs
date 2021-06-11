@@ -13,7 +13,6 @@ async fn delay(seconds: u64) -> String {
 }
 
 #[get("/blocking_task")]
-// async fn blocking_task() -> io::Result<Vec<u8>> {
 async fn blocking_task() -> String {
     // In a real app, use rocket::fs::NamedFile or tokio::fs::File.
     let vec = spawn_blocking(|| std::fs::read_to_string("data.txt"))
