@@ -3,24 +3,13 @@
 #[macro_use]
 extern crate rocket;
 use rocket::tokio::task::spawn_blocking;
-use rocket::tokio::time::{sleep, Duration};
 use std::io;
 
-#[get("/delay/<seconds>")]
-async fn delay(seconds: u64) -> String {
-    sleep(Duration::from_secs(seconds)).await;
-    format!("Waited for {} seconds", seconds)
-}
-
-#[get("/blocking_task")]
-async fn blocking_task() -> String {
-    // In a real app, use rocket::fs::NamedFile or tokio::fs::File.
-    let vec = spawn_blocking(|| std::fs::read_to_string("data.txt"))
+#[get("/logs")]
+async fn logs() -> String {
+    let vec = spawn_blocking(|| std::fs::read_to_string("/tmp/awa_data.txt"))
         .await
         .map_err(|e| io::Error::new(io::ErrorKind::Interrupted, e));
-
-    println!("{:?}", vec);
-    // Ok(vec)
     match vec {
         Ok(Ok(s)) => format!("Content: {:?}", s),
         _ => "Could not read any data".to_owned(),
@@ -36,6 +25,5 @@ fn index() -> &'static str {
 fn rocket() -> _ {
     rocket::build()
         .mount("/", routes![index])
-        .mount("/", routes![delay])
-        .mount("/", routes![blocking_task])
+        .mount("/", routes![logs])
 }
