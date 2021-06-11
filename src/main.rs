@@ -11,7 +11,7 @@ async fn logs() -> String {
         .await
         .map_err(|e| io::Error::new(io::ErrorKind::Interrupted, e));
     match vec {
-        Ok(Ok(s)) => format!("Content: {:?}", s),
+        Ok(Ok(s)) => s,
         _ => "Could not read any data".to_owned(),
     }
 }
