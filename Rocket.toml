@@ -1,0 +1,15 @@
+[development]
+address = "192.168.100.5"
+port = 8000
+
+[debug]
+address = "192.168.100.5"
+port = 8000
+
+[staging]
+address = "0.0.0.0"
+port = 8000
+
+[production]
+address = "0.0.0.0"
+port = 8000
